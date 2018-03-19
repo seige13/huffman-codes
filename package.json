@@ -1,0 +1,12 @@
+{
+  "name": "huffman-codes",
+  "version": "1.0.0",
+  "description": "A program that takes any input text and produces both a frequency table and the corresponding Huffman code",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
