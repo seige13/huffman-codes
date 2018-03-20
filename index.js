@@ -1,15 +1,16 @@
-var fs = require('fs');
+const fs = require('fs');
 
-fs.readFile('test.txt', 'utf8', function (err, data) {
-    if (err) {
-        throw err;
+// Read and process test file
+fs.readFile('test.txt', 'utf8', function (error, data) {
+    if (error) {
+        throw error;
     }
 
     processString(data);
 });
 
 /**
- * Counts the character frequency of a string
+ * Counts the char frequency of a string
  * 
  * @param {String} string
  * 
@@ -25,23 +26,24 @@ function characterCounter(string) {
 }
 
 /**
- * Processes the input string to array of sorted character code obejcts 
+ * Process the input string and return an array of sorted char code objects 
  * 
  * @param data {String}
  * 
  * @return {array}
  */
 function processString(data) {
+    // Removes spaces and punctuation from the string
     data = data.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s\n]+/g, '');
 
-    let text_input = characterCounter(data);
+    let textInput = characterCounter(data);
     let charCodeArray = Object
-        .keys(text_input)
-        .map(i =>
+        .keys(textInput)
+        .map(char =>
             charCode = {
-                'character': i,
-                'count': text_input[i],
-                'frequency': text_input[i] / data.length
+                'char': char,
+                'count': textInput[char],
+                'frequency': textInput[char] / data.length
             })
         .sort((a, b) =>
             a.count < b.count ? 1 : -1
@@ -51,14 +53,14 @@ function processString(data) {
 }
 
 /**
- * Prints frequency of character codes
+ * Prints frequency of char codes
  * 
  * @param {Array} data 
  */
 function printFrequency(data) {
     console.log("Symbol Frequency");
     for (charCode of data) {
-        console.log(`  ${charCode.character},    ${(charCode.frequency * 100).toFixed(2)}% `);
+        console.log(`  ${charCode.char},    ${(charCode.frequency * 100).toFixed(2)}% `);
     }
 }
 
