@@ -10,19 +10,33 @@ const rl = readline.createInterface({
 
 let counts = [];
 let letters = [];
+let outputString = [];  //string to be saved to the output file
 
-// Read and process test file
-rl.question('Please enter the  input file path: ', (answer) => {
-    let filePath = answer || path.join(__dirname, 'infile.dat');
-    fs.readFile(filePath, 'utf8', function (error, data) {
+// Read and process test file and produce results in output file
+rl.question('Please enter the  input file path: ', (inFile) => {
+    let inputFilePath = inFile || path.join(__dirname, 'infile.dat');
+    fs.readFile(inputFilePath, 'utf8', function (error, data) {
         if (error) {
             throw error;
         }
 
-        console.log(data);
+        // console.log(data);
         processString(data);
+        outputString = outputString.join('\n');
+        console.log(outputString);
+
+        rl.question('Please enter the output file path: ', (outFile) => {
+            let outputFilePath = outFile || path.join(__dirname, 'outfile.dat');
+            fs.writeFile(outputFilePath, outputString, (error) => {  
+                if (error) {
+                    throw error;
+                }
+
+                console.log(`Results saved to ${outputFilePath}`);
+            });
+            rl.close();
+        });
     });
-    rl.close();
 });
 
 
@@ -82,9 +96,11 @@ function processString(data) {
  * @param {Array} data
  */
 function printFrequency(data) {
-    console.log("Symbol Frequency");
+    outputString.push('Symbol Frequency');
+    // console.log("Symbol Frequency");
     for (charCode of data) {
-        console.log(`  ${charCode.char},    ${(charCode.frequency * 100).toFixed(2)}% `);
+        outputString.push(`  ${charCode.char},    ${(charCode.frequency * 100).toFixed(2)}% `);
+        // console.log(`  ${charCode.char},    ${(charCode.frequency * 100).toFixed(2)}% `);
     }
 }
 
@@ -155,17 +171,26 @@ function generateHCodes(data) {
         codes[alphabet[i].symbol] = code.join('');
     }
 
-    console.log(codes);
-
+    // console.log(codes);
+    outputString.push('\n');
+    outputString.push('Symbol Huffman Codes');
+    for (let key in codes) {
+        outputString.push(`  ${key},    ${codes[key]}`);
+    }
+    
+    // calculate the length of the coded message in terms of number of bits
     let totalBits = 0;
     let keyLengths = [];
 
     for (let key in codes) {
-      keyLengths.push(codes[key].length)
+        keyLengths.push(codes[key].length)
     }
 
     for (let k=0; k < keyLengths.length; k++) {
-      totalBits = totalBits + (counts[k] * keyLengths[k])
+      totalBits = totalBits + (counts[k] * keyLengths[k]);
     }
-    console.log('Total bits:',totalBits)
+    // console.log('Total bits:',totalBits)
+
+    outputString.push('\n');
+    outputString.push(`Total bits: ${totalBits}`);
 }
