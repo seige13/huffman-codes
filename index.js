@@ -8,6 +8,9 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
+let counts = [];
+let letters = [];
+
 // Read and process test file
 rl.question('Please enter the  input file path: ', (answer) => {
     let filePath = answer || path.join(__dirname, 'infile.dat');
@@ -15,7 +18,7 @@ rl.question('Please enter the  input file path: ', (answer) => {
         if (error) {
             throw error;
         }
-    
+
         console.log(data);
         processString(data);
     });
@@ -25,9 +28,9 @@ rl.question('Please enter the  input file path: ', (answer) => {
 
 /**
  * Counts the char frequency of a string
- * 
+ *
  * @param {String} string
- * 
+ *
  * @return {}
  */
 function characterCounter(string) {
@@ -40,10 +43,10 @@ function characterCounter(string) {
 }
 
 /**
- * Process the input string and return an array of sorted char code objects 
- * 
+ * Process the input string and return an array of sorted char code objects
+ *
  * @param data {String}
- * 
+ *
  * @return {array}
  */
 function processString(data) {
@@ -63,15 +66,20 @@ function processString(data) {
             a.count < b.count ? 1 : -1
         );
 
+    for (var i=0;i<charCodeArray.length;i++) {
+      counts.push(charCodeArray[i].count)
+      letters.push(charCodeArray[i].char)
+    }
+
     printFrequency(charCodeArray);
     generateHCodes(charCodeArray);
-    
+
 }
 
 /**
  * Prints frequency of char codes
- * 
- * @param {Array} data 
+ *
+ * @param {Array} data
  */
 function printFrequency(data) {
     console.log("Symbol Frequency");
@@ -82,8 +90,8 @@ function printFrequency(data) {
 
 /**
  * Generate Huffman Codes for characters
- * 
- * @param {Array} data 
+ *
+ * @param {Array} data
  */
 function generateHCodes(data) {
     let tree = [];      //sequential container (list/array/vector) named tree of the type TreeNode
@@ -148,5 +156,16 @@ function generateHCodes(data) {
     }
 
     console.log(codes);
-}
 
+    let totalBits = 0;
+    let keyLengths = [];
+
+    for (let key in codes) {
+      keyLengths.push(codes[key].length)
+    }
+
+    for (let k=0; k < keyLengths.length; k++) {
+      totalBits = totalBits + (counts[k] * keyLengths[k])
+    }
+    console.log('Total bits:',totalBits)
+}
