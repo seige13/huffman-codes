@@ -20,14 +20,13 @@ rl.question('Please enter the  input file path: ', (inFile) => {
             throw error;
         }
 
-        // console.log(data);
         processString(data);
         outputString = outputString.join('\n');
         console.log(outputString);
 
         rl.question('Please enter the output file path: ', (outFile) => {
             let outputFilePath = outFile || path.join(__dirname, 'outfile.dat');
-            fs.writeFile(outputFilePath, outputString, (error) => {  
+            fs.writeFile(outputFilePath, outputString, (error) => {
                 if (error) {
                     throw error;
                 }
@@ -38,7 +37,6 @@ rl.question('Please enter the  input file path: ', (inFile) => {
         });
     });
 });
-
 
 /**
  * Counts the char frequency of a string
@@ -80,9 +78,9 @@ function processString(data) {
             a.count < b.count ? 1 : -1
         );
 
-    for (var i=0;i<charCodeArray.length;i++) {
-      counts.push(charCodeArray[i].count)
-      letters.push(charCodeArray[i].char)
+    for (var i = 0; i < charCodeArray.length; i++) {
+        counts.push(charCodeArray[i].count)
+        letters.push(charCodeArray[i].char)
     }
 
     printFrequency(charCodeArray);
@@ -97,10 +95,8 @@ function processString(data) {
  */
 function printFrequency(data) {
     outputString.push('Symbol Frequency');
-    // console.log("Symbol Frequency");
     for (charCode of data) {
         outputString.push(`  ${charCode.char},    ${(charCode.frequency * 100).toFixed(2)}% `);
-        // console.log(`  ${charCode.char},    ${(charCode.frequency * 100).toFixed(2)}% `);
     }
 }
 
@@ -128,7 +124,7 @@ function generateHCodes(data) {
         let forestRoot = new classes.ForestRoots(); //forest
         forestRoot.weight = data[i].count;
         forestRoot.root = i;
-        forest.enqueu(forestRoot);
+        forest.enqueue(forestRoot);
 
     }
 
@@ -149,7 +145,7 @@ function generateHCodes(data) {
         let newRoot = new classes.ForestRoots();
         newRoot.weight = least.weight + second.weight;
         newRoot.root = i++;
-        forest.enqueu(newRoot);
+        forest.enqueue(newRoot);
     }
 
     // generate Huffman Codes
@@ -157,7 +153,7 @@ function generateHCodes(data) {
     for (let i = 0; i < alphabet.length; i++) {
         let code = [];
         let j = i;
-        while (j != tree.length-1) {
+        while (j != tree.length - 1) {
             let currentIndex = j;
             if (tree[j].parent)     // if there is a parent
                 j = tree[j].parent; // move up the tree
@@ -171,13 +167,12 @@ function generateHCodes(data) {
         codes[alphabet[i].symbol] = code.join('');
     }
 
-    // console.log(codes);
     outputString.push('\n');
     outputString.push('Symbol Huffman Codes');
     for (let key in codes) {
         outputString.push(`  ${key},    ${codes[key]}`);
     }
-    
+
     // calculate the length of the coded message in terms of number of bits
     let totalBits = 0;
     let keyLengths = [];
@@ -186,10 +181,9 @@ function generateHCodes(data) {
         keyLengths.push(codes[key].length)
     }
 
-    for (let k=0; k < keyLengths.length; k++) {
-      totalBits = totalBits + (counts[k] * keyLengths[k]);
+    for (let k = 0; k < keyLengths.length; k++) {
+        totalBits = totalBits + (counts[k] * keyLengths[k]);
     }
-    // console.log('Total bits:',totalBits)
 
     outputString.push('\n');
     outputString.push(`Total bits: ${totalBits}`);
