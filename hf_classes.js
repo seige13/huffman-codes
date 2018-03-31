@@ -27,7 +27,7 @@ class PriorityQueue {
         this.arr = [];
         this.prioritizer = prioritizer;
     }
-    enqueu(forestRoot) {
+    enqueue(forestRoot) {
         if (this.arr.length == 0) {
             this.arr.push(forestRoot);
             return;
@@ -40,16 +40,6 @@ class PriorityQueue {
             this.arr.splice(i, 0, forestRoot);
             added = true;
             break;
-            // else if (this.prioritizer(forestRoot.weight, this.arr[i].weight) == 0) {
-            //     this.arr.splice(i+1, 0, forestRoot);
-            //     added = true;
-            //     break;
-            // }
-            // else {
-            //     this.arr.splice(i, 0, forestRoot);
-            //     added = true;
-            //     break;
-            // }
         }
         if (!added) {
             this.arr.push(forestRoot);
@@ -71,4 +61,4 @@ module.exports = {
     TreeNode: TreeNode,
     SymbolInfo: SymbolInfo,
     ForestRoots: ForestRoots,
-  }
+}
